@@ -1,10 +1,15 @@
 from typing import List
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
+from sqlalchemy.orm import Session
 from starlette.middleware.cors import CORSMiddleware
 
-from model import shop
-from model.shop import ShopResponse
+import shopCrud
+from schema.Shop import ShopBase
+from sql_alchemy import models
+from sql_alchemy.SqlAlchemy import SessionLocal, engine
+
+models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
@@ -24,6 +29,15 @@ app.add_middleware(
 )
 
 
+# Dependency
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
@@ -35,8 +49,5 @@ async def say_hello(name: str):
 
 
 @app.get("/shop")
-async def read_shop(page: int = 0, size: int = 10) -> list[ShopResponse]:
-    return [
-        ShopResponse(name=f"Shop{i}", location=f"Location{i}", firstPrizeCount=i, secondPrizeCount=i * 2)
-        for i in range(0, size)
-    ]
+async def read_shop(db: Session = Depends(get_db), page: int = 0, size: int = 10) -> list[ShopBase]:
+    return shopCrud.get_shop(db, page, size)
