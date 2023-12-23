@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String
 
-from sql_alchemy.SqlAlchemy import Base
+from sql_alchemy.sql_alchemy import Base
 
 
 class Shop(Base):

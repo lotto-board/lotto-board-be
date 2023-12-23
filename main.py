@@ -5,9 +5,9 @@ from sqlalchemy.orm import Session
 from starlette.middleware.cors import CORSMiddleware
 
 import shopCrud
-from schema.Shop import ShopBase
+from schema.shop import ShopBase
 from sql_alchemy import models
-from sql_alchemy.SqlAlchemy import SessionLocal, engine
+from sql_alchemy.sql_alchemy import SessionLocal, engine
 
 models.Base.metadata.create_all(bind=engine)
 
