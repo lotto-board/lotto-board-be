@@ -1,5 +1,6 @@
 from typing import List
 
+import uvicorn
 from fastapi import FastAPI, Depends
 from pydantic.v1 import BaseSettings
 from sqlalchemy.orm import Session
@@ -53,3 +54,7 @@ async def say_hello(name: str):
 @app.get("/shop")
 async def read_shop(db: Session = Depends(get_db), page: int = 0, size: int = 10) -> list[ShopBase]:
     return shopCrud.get_shop(db, page, size)
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="localhost", port=8000)
+
