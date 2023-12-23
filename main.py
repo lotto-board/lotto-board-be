@@ -1,6 +1,7 @@
 from typing import List
 
 from fastapi import FastAPI, Depends
+from pydantic.v1 import BaseSettings
 from sqlalchemy.orm import Session
 from starlette.middleware.cors import CORSMiddleware
 
@@ -10,6 +11,7 @@ from sql_alchemy import models
 from sql_alchemy.sql_alchemy import SessionLocal, engine
 
 models.Base.metadata.create_all(bind=engine)
+
 
 app = FastAPI()
 
