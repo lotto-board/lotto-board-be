@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 
-from sql_alchemy import models
+from database import models
 
 
 def get_shop(db: Session, offset: int = 0, limit: int = 10):
