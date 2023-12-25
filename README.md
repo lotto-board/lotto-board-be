@@ -47,3 +47,34 @@ API READ DOC
 ```
 http://localhost:8000/redoc
 ```
+
+## Project Tree
+```
+lotto-board-be
+├─ .gitignore
+├─ .python-version
+├─ Dockerfile
+├─ README.md
+├─ config
+│  └─ __init__.py
+├─ database
+│  ├─ __init__.py
+│  ├─ models
+│  │  └─ shop.py
+│  ├─ shop.py
+│  └─ shop_crud.py
+├─ http
+│  └─ test_main.http
+├─ main.py
+├─ model
+│  ├─ __init__.py
+│  └─ shop.py
+├─ requirements.txt
+├─ routes
+│  ├─ __init__.py
+│  ├─ base.py
+│  └─ shop.py
+└─ sql-scripts
+   └─ init.sql
+
+```
