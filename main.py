@@ -1,18 +1,11 @@
-from typing import List
-
 import uvicorn
-from fastapi import FastAPI, Depends
-from pydantic.v1 import BaseSettings
-from sqlalchemy.orm import Session
+from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
-import shopCrud
-from schema.shop import ShopBase
-from sql_alchemy import models
-from sql_alchemy.sql_alchemy import SessionLocal, engine
-
-models.Base.metadata.create_all(bind=engine)
-
+from database import Base
+from database import engine
+from routes.base import base_router
+from routes.shop import shop_router
 
 app = FastAPI()
 
@@ -32,29 +25,10 @@ app.add_middleware(
 )
 
 
-# Dependency
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
-
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
-
-
-@app.get("/hello/{name}")
-async def say_hello(name: str):
-    return {"message": f"Hello {name}"}
-
-
-@app.get("/shop")
-async def read_shop(db: Session = Depends(get_db), page: int = 0, size: int = 10) -> list[ShopBase]:
-    return shopCrud.get_shop(db, page, size)
+app.include_router(base_router, prefix="/base")
+app.include_router(shop_router, prefix="/shop")
 
 if __name__ == "__main__":
+    Base.metadata.create_all(bind=engine)
     uvicorn.run(app, host="localhost", port=8000)
 
