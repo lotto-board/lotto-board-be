@@ -2,8 +2,7 @@ from fastapi import APIRouter, Depends
 
 from sqlalchemy.orm import Session
 
-import database.shop_crud as shop_crud
-from model.shop import ShopBase, ShopInfoDto
+from model.shop import ShopInfoDto
 from database.models.shop import ShopInfo
 from database import SessionLocal
 

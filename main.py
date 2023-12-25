@@ -2,8 +2,7 @@ import uvicorn
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
-from database import Base
-from database import engine
+from database import Base, engine
 from routes.base import base_router
 from routes.shop import shop_router
 
