@@ -24,7 +24,7 @@ pyenv install {VERSION}
 
 pyenv 프로젝트 버전 설정
 ```sh
-pyenv virtual env {VERSION} venv
+pyenv virtualenv {VERSION} venv
 pyenv local {VERSION}
 ```
 
