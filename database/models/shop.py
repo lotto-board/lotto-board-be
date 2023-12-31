@@ -19,6 +19,8 @@ class ShopInfo(Base):
     address = Column(String)
     name = Column(String)
     phone_number = Column(String)
+    latitude = Column(String)
+    longitude = Column(String)
 
     shop_winning = relationship("WinningShop", back_populates="shop_info")
 
