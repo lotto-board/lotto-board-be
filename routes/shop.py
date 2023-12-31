@@ -12,6 +12,7 @@ shop_router = APIRouter(
     tags=["Shop"]
 )
 
+
 # Dependency
 def get_db():
     db = SessionLocal()
@@ -24,6 +25,7 @@ def get_db():
 @shop_router.get("/ranking")
 async def read_shop(db: Session = Depends(get_db), page: int = 0, size: int = 10) -> list[WinningShop]:
     return get_shop_rankings(db, page, size)
+
 
 @shop_router.get("/shop-info")
 async def read_shop_info(db: Session = Depends(get_db)) -> list[ShopInfoDto]:
