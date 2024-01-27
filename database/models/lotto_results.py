@@ -1,12 +1,7 @@
-from collections import Counter
-from typing import List
-
 from sqlalchemy import Column, Integer, Date, BigInteger
 from sqlalchemy.orm import Session
-from sqlalchemy.sql.functions import rank
 
 from database import Base
-from model.number_ranking import NumberRanking
 
 
 class LottoResults(Base):
@@ -28,3 +23,11 @@ class LottoResults(Base):
     @staticmethod
     def get_lotto_results(session: Session):
         return session.query(LottoResults).all()
+
+    @staticmethod
+    def get_recent_lotto_prize(session: Session, limit: int):
+        return (session.query(LottoResults.draw_number, LottoResults.first_prize_amount)
+                .order_by(LottoResults.draw_number.desc())
+                .limit(limit)
+                .all()
+                )

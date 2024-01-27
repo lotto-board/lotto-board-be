@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 
 from database.models.lotto_results import LottoResults
 from model.number_ranking import NumberRanking
-from model.number_statistic import LotteryNumberStatistics
+from model.number_statistic import LotteryNumberStatistics, LotteryWinningPrize
 
 
 class LottoResultService:
@@ -26,6 +26,14 @@ class LottoResultService:
         lotto_results = LottoResults.get_lotto_results(session=session)
         numbers = [getattr(result, f'number{i}') for result in lotto_results for i in range(1, 7)]
         return cls.__calculate_range_statistics(numbers=numbers)
+
+    @classmethod
+    def get_recent_winning_prize(cls, session: Session, limit: int) -> List[LotteryWinningPrize]:
+        recent_results = LottoResults.get_recent_lotto_prize(session=session, limit=limit)
+        return [
+            LotteryWinningPrize(draw_number=draw_number, first_prize_amount=first_prize_amount)
+            for draw_number, first_prize_amount in recent_results
+        ][::-1]
 
     @classmethod
     def __calculate_range_statistics(cls, numbers: List[int]) -> LotteryNumberStatistics:

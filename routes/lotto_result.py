@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from database import SessionLocal
 from database.models.lotto_results import LottoResults
 from model.number_ranking import NumberRanking
-from model.number_statistic import LotteryNumberStatistics
+from model.number_statistic import LotteryNumberStatistics, LotteryWinningPrize
 from service.lotto_result_service import LottoResultService
 
 lotto_result_router = APIRouter(
@@ -35,3 +35,8 @@ async def read_bonus_number(db: Session = Depends(get_db)) -> List[NumberRanking
 @lotto_result_router.get("/statistics")
 async def read_statistics(db: Session = Depends(get_db)) -> LotteryNumberStatistics:
     return LottoResultService.get_number_range_statistics(session=db)
+
+
+@lotto_result_router.get("/recent-prize")
+async def read_recent_prize(db: Session = Depends(get_db), limit: Optional[int] = 10) -> List[LotteryWinningPrize]:
+    return LottoResultService.get_recent_winning_prize(session=db, limit=limit)
