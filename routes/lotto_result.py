@@ -6,7 +6,8 @@ from sqlalchemy.orm import Session
 from database import SessionLocal
 from database.models.lotto_results import LottoResults
 from model.number_ranking import NumberRanking
-from service.lotto_result_service import LottoRankingService
+from model.number_statistic import LotteryNumberStatistics
+from service.lotto_result_service import LottoResultService
 
 lotto_result_router = APIRouter(
     tags=["LottoResult"]
@@ -23,9 +24,14 @@ def get_db():
 
 @lotto_result_router.get("/number_rankings")
 async def read_number_rankings(db: Session = Depends(get_db)) -> List[NumberRanking]:
-    return LottoRankingService.get_number_ranking(session=db)
+    return LottoResultService.get_number_ranking(session=db)
 
 
 @lotto_result_router.get("/bonus_number")
-async def read_bonus_number(db: Session = Depends(get_db)):
-    return LottoRankingService.get_bonus_number_ranking(session=db)
+async def read_bonus_number(db: Session = Depends(get_db)) -> List[NumberRanking]:
+    return LottoResultService.get_bonus_number_ranking(session=db)
+
+
+@lotto_result_router.get("/statistics")
+async def read_statistics(db: Session = Depends(get_db)) -> LotteryNumberStatistics:
+    return LottoResultService.get_number_range_statistics(session=db)

@@ -5,9 +5,10 @@ from sqlalchemy.orm import Session
 
 from database.models.lotto_results import LottoResults
 from model.number_ranking import NumberRanking
+from model.number_statistic import LotteryNumberStatistics
 
 
-class LottoRankingService:
+class LottoResultService:
     @classmethod
     def get_number_ranking(cls, session: Session) -> List[NumberRanking]:
         lotto_results = LottoResults.get_lotto_results(session=session)
@@ -21,7 +22,33 @@ class LottoRankingService:
         return cls.__create_number_ranking(numbers=bonus_numbers)
 
     @classmethod
-    def __create_number_ranking(cls, numbers) -> List[NumberRanking]:
+    def get_number_range_statistics(cls, session: Session) -> LotteryNumberStatistics:
+        lotto_results = LottoResults.get_lotto_results(session=session)
+        numbers = [getattr(result, f'number{i}') for result in lotto_results for i in range(1, 7)]
+        return cls.__calculate_range_statistics(numbers=numbers)
+
+    @classmethod
+    def __calculate_range_statistics(cls, numbers: List[int]) -> LotteryNumberStatistics:
+        frequencies = Counter(numbers)
+        total_count = sum(frequencies.values())
+
+        def sum_range(start, end):
+            return sum(frequencies[i] for i in range(start, end + 1))
+
+        def range_percentage(start, end):
+            percentage = (sum_range(start, end) / total_count) * 100
+            return round(percentage, 2)
+
+        return LotteryNumberStatistics(
+            first_segment=range_percentage(1, 9),
+            second_segment=range_percentage(10, 19),
+            third_segment=range_percentage(20, 29),
+            fourth_segment=range_percentage(30, 39),
+            final_segment=range_percentage(40, 45)
+        )
+
+    @classmethod
+    def __create_number_ranking(cls, numbers: List[int]) -> List[NumberRanking]:
         frequency = Counter(numbers)
         sorted_numbers = sorted(frequency.items(), key=lambda x: x[1], reverse=True)
         return [

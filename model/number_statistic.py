@@ -1,0 +1,10 @@
+from pydantic import BaseModel
+
+
+class LotteryNumberStatistics(BaseModel):
+    first_segment: float
+    second_segment: float
+    third_segment: float
+    fourth_segment: float
+    final_segment: float
+    
