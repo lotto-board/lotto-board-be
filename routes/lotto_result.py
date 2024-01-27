@@ -36,6 +36,11 @@ async def read_statistics(db: Session = Depends(get_db)) -> LotteryNumberStatist
     return LottoResultService.get_number_range_statistics(session=db)
 
 
+@lotto_result_router.get("/statistics/bonus_number")
+async def read_bonus_statistics(db: Session = Depends(get_db)) -> LotteryNumberStatistics:
+    return LottoResultService.get_bonus_number_range_statistics(session=db)
+
+
 @lotto_result_router.get("/recent-prize")
 async def read_recent_prize(db: Session = Depends(get_db), limit: Optional[int] = 10) -> List[LotteryWinningPrize]:
     return LottoResultService.get_recent_winning_prize(session=db, limit=limit)

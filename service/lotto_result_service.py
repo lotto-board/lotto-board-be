@@ -28,6 +28,12 @@ class LottoResultService:
         return cls.__calculate_range_statistics(numbers=numbers)
 
     @classmethod
+    def get_bonus_number_range_statistics(cls, session: Session) -> LotteryNumberStatistics:
+        lotto_results = LottoResults.get_lotto_results(session=session)
+        bonus_numbers = [result.bonus_number for result in lotto_results]
+        return cls.__calculate_range_statistics(numbers=bonus_numbers)
+
+    @classmethod
     def get_recent_winning_prize(cls, session: Session, limit: int) -> List[LotteryWinningPrize]:
         recent_results = LottoResults.get_recent_lotto_prize(session=session, limit=limit)
         return [
