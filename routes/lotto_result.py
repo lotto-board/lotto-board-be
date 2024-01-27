@@ -4,7 +4,6 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from database import SessionLocal
-from database.models.lotto_results import LottoResults
 from model.number_ranking import NumberRanking
 from model.number_statistic import LotteryNumberStatistics, LotteryWinningPrize
 from service.lotto_result_service import LottoResultService
