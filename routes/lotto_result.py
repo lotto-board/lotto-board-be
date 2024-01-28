@@ -21,12 +21,12 @@ def get_db():
         db.close()
 
 
-@lotto_result_router.get("/number_rankings")
+@lotto_result_router.get("/number-rankings")
 async def read_number_rankings(db: Session = Depends(get_db)) -> List[NumberRanking]:
     return LottoResultService.get_number_ranking(session=db)
 
 
-@lotto_result_router.get("/bonus_number")
+@lotto_result_router.get("/bonus-number")
 async def read_bonus_number(db: Session = Depends(get_db)) -> List[NumberRanking]:
     return LottoResultService.get_bonus_number_ranking(session=db)
 
