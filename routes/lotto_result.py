@@ -36,7 +36,7 @@ async def read_statistics(db: Session = Depends(get_db)) -> LotteryNumberStatist
     return LottoResultService.get_number_range_statistics(session=db)
 
 
-@lotto_result_router.get("/statistics/bonus_number")
+@lotto_result_router.get("/statistics/bonus")
 async def read_bonus_statistics(db: Session = Depends(get_db)) -> LotteryNumberStatistics:
     return LottoResultService.get_bonus_number_range_statistics(session=db)
 
