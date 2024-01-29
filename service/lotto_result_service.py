@@ -11,26 +11,22 @@ from model.number_statistic import LotteryNumberStatistics, LotteryWinningPrize
 class LottoResultService:
     @classmethod
     def get_number_ranking(cls, session: Session) -> List[NumberRanking]:
-        lotto_results = LottoResults.get_lotto_results(session=session)
-        numbers = [getattr(result, f'number{i}') for result in lotto_results for i in range(1, 7)]
+        numbers = cls.__get_number_appearance(session)
         return cls.__create_number_ranking(numbers=numbers)
 
     @classmethod
     def get_bonus_number_ranking(cls, session: Session) -> List[NumberRanking]:
-        lotto_results = LottoResults.get_lotto_results(session=session)
-        bonus_numbers = [result.bonus_number for result in lotto_results]
+        bonus_numbers = cls.__get_bonus_number_appearance(session)
         return cls.__create_number_ranking(numbers=bonus_numbers)
 
     @classmethod
     def get_number_range_statistics(cls, session: Session) -> LotteryNumberStatistics:
-        lotto_results = LottoResults.get_lotto_results(session=session)
-        numbers = [getattr(result, f'number{i}') for result in lotto_results for i in range(1, 7)]
+        numbers = cls.__get_number_appearance(session)
         return cls.__calculate_range_statistics(numbers=numbers)
 
     @classmethod
     def get_bonus_number_range_statistics(cls, session: Session) -> LotteryNumberStatistics:
-        lotto_results = LottoResults.get_lotto_results(session=session)
-        bonus_numbers = [result.bonus_number for result in lotto_results]
+        bonus_numbers = cls.__get_bonus_number_appearance(session)
         return cls.__calculate_range_statistics(numbers=bonus_numbers)
 
     @classmethod
@@ -69,3 +65,15 @@ class LottoResultService:
             NumberRanking(rank=rank + 1, number=number, frequency=frequency)
             for rank, (number, frequency) in enumerate(sorted_numbers)
         ]
+
+    @classmethod
+    def __get_number_appearance(cls, session):
+        lotto_results = LottoResults.get_lotto_results(session=session)
+        numbers = [getattr(result, f'number{i}') for result in lotto_results for i in range(1, 7)]
+        return numbers
+
+    @classmethod
+    def __get_bonus_number_appearance(cls, session):
+        lotto_results = LottoResults.get_lotto_results(session=session)
+        bonus_numbers = [result.bonus_number for result in lotto_results]
+        return bonus_numbers
