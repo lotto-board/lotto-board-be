@@ -1,0 +1,12 @@
+"docker-compose.yml" 11L, 171B                             11,17         All
+version: '3'
+
+services:
+  fastapi-app:
+    build:
+      context: .
+      dockerfile: Dockerfile-be
+    ports:
+      - "8080:8080"
+    volumes:
+      - ~/log/api:/app/logs
