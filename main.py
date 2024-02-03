@@ -4,6 +4,7 @@ from starlette.middleware.cors import CORSMiddleware
 
 from database import Base, engine
 from routes.base import base_router
+from routes.lotto_result import lotto_result_router
 from routes.shop import shop_router
 
 app = FastAPI()
@@ -26,6 +27,7 @@ app.add_middleware(
 
 app.include_router(base_router, prefix="/base")
 app.include_router(shop_router, prefix="/shop")
+app.include_router(lotto_result_router, prefix="/lotto-result")
 
 if __name__ == "__main__":
     Base.metadata.create_all(bind=engine)
